@@ -8,9 +8,6 @@
             </footer>
         </div>
     </div><!-- close class="wrapper" -->
-
-    <!-- the support button on the top right -->
-    <!-- <a class="support-button" href="https://affiliates.a2hosting.com/idevaffiliate.php?id=4471&url=579" target="_blank"></a> -->
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap.min.js" async></script>
 
