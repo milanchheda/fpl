@@ -1,7 +1,35 @@
-        <div class="footer"></div>
+        <div class="footer">
+            <footer>
+                <center>
+                    <div class="devunit">
+                       Made with <span class="love"><i class="glyphicon glyphicon-heart"></i></span>  by <a href="//milanchheda.com" target="_BLANK">Milan Chheda</a>
+                    </div>
+                </center>
+            </footer>
+        </div>
     </div><!-- close class="wrapper" -->
 
     <!-- the support button on the top right -->
-    <a class="support-button" href="https://affiliates.a2hosting.com/idevaffiliate.php?id=4471&url=579" target="_blank"></a>
+    <!-- <a class="support-button" href="https://affiliates.a2hosting.com/idevaffiliate.php?id=4471&url=579" target="_blank"></a> -->
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap.min.js" async></script>
+
+    <?php
+    if (View::checkForActiveController($filename, "players")) {
+    ?>
+        <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/players.js" async></script>
+    <?php }
+    ?>
+    <script>
+    function rotateCard(btn){
+        var $card = $(btn).closest('.card-container');
+        console.log($card);
+        if($card.hasClass('hover')){
+            $card.removeClass('hover');
+        } else {
+            $card.addClass('hover');
+        }
+    }
+    </script>
 </body>
 </html>
