@@ -108,7 +108,6 @@ class View
     {
         $split_filename = explode("/", $filename);
         $active_controller = $split_filename[0];
-
         if ($active_controller == $navigation_controller) {
             return true;
         }
@@ -173,5 +172,213 @@ class View
     public function encodeHTML($str)
     {
         return htmlentities($str, ENT_QUOTES, 'UTF-8');
+    }
+
+    public function generateCard($playersArray) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT sum(`big_chances_created`) as big_chances_created,
+        sum(`big_chances_missed`) as big_chances_missed,
+        sum(`yellow_cards`) as yellow_cards,
+        sum(`red_cards`) as red_cards,
+        sum(`penalties_missed`) as penalties_missed,
+        sum(`key_passes`) as key_passes,
+        sum(ph.`fouls`) as fouls,
+        sum(`offside`) as offside,
+        sum(`target_missed`) as target_missed
+        FROM `players_history` ph
+        WHERE ph.`player_id`=" . $playersArray->id;
+
+        $query = $database->prepare($sql);
+        $query->execute();
+        $playersHistory = $query->fetchAll();
+
+        $selectedByClass = '';
+        if($playersArray->selected_by > 20) {
+                $selectedByClass = 'green';
+        }
+
+        $pointsPerGameClass = '';
+        if($playersArray->points_per_game > 6) {
+                $pointsPerGameClass = 'green';
+        }
+
+        $formClass = '';
+        if($playersArray->form > 8) {
+                $formClass = 'green';
+        }
+
+        $redCardClass = '';
+        if($playersHistory[0]->red_cards > 0)
+            $redCardClass = "class='red'";
+
+        $yellowCardClass = '';
+        if($playersHistory[0]->yellow_cards > 4)
+            $yellowCardClass = "class='red'";
+
+        $foulClass = '';
+        if($playersHistory[0]->fouls > 30)
+            $foulClass = "class='red'";
+
+        $bigChancesCreatedClass = '';
+        if($playersHistory[0]->big_chances_created > 8)
+            $bigChancesCreatedClass = "class='green'";
+
+        return '<div class="col-md-4 col-sm-6 '. $playersArray->teamName .' allFlipCards">
+             <div class="card-container manual-flip">
+                <div class="card">
+                    <div class="front">
+                        <div class="cover">
+                            <h3 class="name">' . $playersArray->playerName . '</h3>
+                            <p class="profession">' . $playersArray->position . '</p>
+                        </div>
+                        <div class="content">
+                            <div class="main">
+                                <div class="stats-container">
+                                    <div class="stats">
+                                        <h4>' . $playersArray->total_points . '</h4>
+                                        <p>
+                                            Total Points
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $playersArray->goals_scored . '</h4>
+                                        <p>
+                                            Goals Scored
+                                        </p>
+                                    </div>
+                                    <div class="stats '.$selectedByClass.'">
+                                        <h4>' . $playersArray->selected_by . '%</h4>
+                                        <p>
+                                            Selected By
+                                        </p>
+                                    </div>
+                                    <div class="stats '.$formClass.'">
+                                        <h4>' . $playersArray->form . '</h4>
+                                        <p>
+                                            Form
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $playersArray->assists . '</h4>
+                                        <p>
+                                            Assists
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $playersArray->minutes . '</h4>
+                                        <p>
+                                            Minutes
+                                        </p>
+                                    </div>
+                                    <div class="stats '.$pointsPerGameClass.'">
+                                        <h4>' . $playersArray->points_per_game . '</h4>
+                                        <p>
+                                            Points Per Game
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $playersArray->dreamteam_count . '</h4>
+                                        <p>
+                                            Dreamteam Count
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $playersArray->clean_sheets . '</h4>
+                                        <p>
+                                            Clean Sheets
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <div class="club ' . $playersArray->teamName . '"></div>
+                                <button class="btn btn-simple" onclick="rotateCard(this)">
+                                    <i class="fa fa-mail-forward"></i> View details
+                                </button>
+                            </div>
+                        </div>
+                    </div> <!-- end front panel -->
+                    <div class="back">
+                        <div class="player-details">
+                            <div '.$bigChancesCreatedClass.'>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Big Chances Created</label>
+                                <span>' . $playersHistory[0]->big_chances_created . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Big Chances Missed</label>
+                                <span>' . $playersHistory[0]->big_chances_missed . '</span>
+                            </div>
+                            <div '.$yellowCardClass.'>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Yellow Cards</label>
+                                <span>' . $playersHistory[0]->yellow_cards . '</span>
+                            </div>
+                            <div '.$redCardClass.'>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Red Cards</label>
+                                <span>' . $playersHistory[0]->red_cards . '</span>
+                            </div>
+                            <div '.$foulClass.'>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Total Fouls</label>
+                                <span>' . $playersHistory[0]->fouls . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>No. of times offside</label>
+                                <span>' . $playersHistory[0]->offside . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Penalties Missed</label>
+                                <span>' . $playersHistory[0]->penalties_missed . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Key Passes</label>
+                                <span>' . $playersHistory[0]->key_passes . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Targets Missed</label>
+                                <span>' . $playersHistory[0]->target_missed . '</span>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+                                <i class="fa fa-reply"></i> Back
+                            </button>
+                        </div>
+                    </div> <!-- end back panel -->
+                </div> <!-- end card -->
+            </div> <!-- end card-container -->
+        </div> <!-- end col sm 3 -->';
+    }
+
+    public function gameweekTopPointPlayers($gwNumber) {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT concat(p.`first_name`, ' ', p.`second_name`) as playerName, ph.`total_points` from `players_history` ph
+        JOIN players p on p.`id` = ph.`player_id`
+        where ph.`round`= " . $gwNumber . "
+        ORDER BY ph.`total_points` DESC
+        LIMIT 8";
+
+        $query = $database->prepare($sql);
+        $query->execute();
+        return $query->fetchAll();
+    }
+
+    public function getClubs() {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT short_name FROM teams order by short_name ASC";
+
+        $query = $database->prepare($sql);
+        $query->execute();
+        return $query->fetchAll();
     }
 }
