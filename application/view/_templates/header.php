@@ -1,12 +1,13 @@
 <!doctype html>
 <html>
-<head>
-    <title>HUGE</title>
-    <!-- META -->
+<head lang="en">
+    <title>FPL Analysis</title>
     <meta charset="utf-8">
-    <!-- send empty favicon fallback to prevent user's browser hitting the server for lots of favicon requests resulting in 404s -->
-    <link rel="icon" href="data:;base64,=">
-    <!-- CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="FPL Analysis">
+    <meta name="description" content="FPL Analysis for Fantasy Premier League Managers">
+    <meta name="keywords" content="English Premier League, Fantasy Premier League, EPL, BPL, Barclays Premier League, Premier League">
+
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/bootstrap.min.css" />
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
@@ -56,39 +57,3 @@
                 </ul>
             </div>
         </div>
-
-        <!-- my account -->
-        <ul class="navigation right">
-        <?php if (Session::userIsLoggedIn()) : ?>
-            <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                <a href="<?php echo Config::get('URL'); ?>user/index">My Account</a>
-                <ul class="navigation-submenu">
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/changeUserRole">Change account type</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/editAvatar">Edit your avatar</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/editusername">Edit my username</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/edituseremail">Edit my email</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "user")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>user/changePassword">Change Password</a>
-                    </li>
-                    <li <?php if (View::checkForActiveController($filename, "login")) { echo ' class="active" '; } ?> >
-                        <a href="<?php echo Config::get('URL'); ?>login/logout">Logout</a>
-                    </li>
-                </ul>
-            </li>
-            <?php if (Session::get("user_account_type") == 7) : ?>
-                <li <?php if (View::checkForActiveController($filename, "admin")) {
-                    echo ' class="active" ';
-                } ?> >
-                    <a href="<?php echo Config::get('URL'); ?>admin/">Admin</a>
-                </li>
-            <?php endif; ?>
-        <?php endif; ?>
-        </ul>
