@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html class="no-js">
 <head lang="en">
     <title>FPL Analysis</title>
     <meta charset="utf-8">
@@ -10,6 +10,7 @@
 
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/nprogress.css" />
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -38,6 +39,7 @@
     <!-- End Facebook Pixel Code -->
 </head>
 <body>
+    <div class="se-pre-con"></div>
     <!-- wrapper, to center website -->
     <div class="wrapper">
 
