@@ -9,12 +9,13 @@
         </div>
     </div><!-- close class="wrapper" -->
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap.min.js" async></script>
-
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/nprogress.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/players.js"></script>
     <?php
     if (View::checkForActiveController($filename, "players")) {
     ?>
-        <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/players.js" async></script>
+        <!-- <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/players.js" async></script> -->
     <?php }
     ?>
     <script>
