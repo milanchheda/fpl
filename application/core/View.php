@@ -194,7 +194,7 @@ class View
         $playersHistory = $query->fetchAll();
 
         $selectedByClass = '';
-        if($playersArray->selected_by > 20) {
+        if($playersArray->selected_by > 12) {
                 $selectedByClass = 'green';
         }
 
@@ -204,7 +204,7 @@ class View
         }
 
         $formClass = '';
-        if($playersArray->form > 8) {
+        if($playersArray->form > 7) {
                 $formClass = 'green';
         }
 
@@ -223,6 +223,10 @@ class View
         $bigChancesCreatedClass = '';
         if($playersHistory[0]->big_chances_created > 8)
             $bigChancesCreatedClass = "class='green'";
+
+        $dreamteamClass = '';
+        if($playersArray->dreamteam_count > 5)
+            $dreamteamClass = "class='green'";
 
         return '<div class="col-md-4 col-sm-6 '. $playersArray->teamName .' allFlipCards">
              <div class="card-container manual-flip">
@@ -277,7 +281,7 @@ class View
                                             Points Per Game
                                         </p>
                                     </div>
-                                    <div class="stats">
+                                    <div class="stats '.$dreamteamClass.'">
                                         <h4>' . $playersArray->dreamteam_count . '</h4>
                                         <p>
                                             Dreamteam Count
