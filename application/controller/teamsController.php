@@ -2,7 +2,7 @@
 // Turn off all error reporting
 error_reporting(0);
 
-class teamsController extends Controller
+class TeamsController extends Controller
 {
     /**
      * Construct this object by extending the basic Controller class
@@ -20,7 +20,7 @@ class teamsController extends Controller
     {
         // $this->View->render('players/index');
         $this->View->render('teams/index', array(
-            'teams' => teamsModel::getAllTeamsSummary()
+            'teams' => TeamsModel::getAllTeamsSummary()
         ));
 
     }
