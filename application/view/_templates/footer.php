@@ -11,6 +11,7 @@
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/nprogress.js"></script>
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap-typeahead.js"></script>
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/players.js"></script>
     <?php
     if (View::checkForActiveController($filename, "players")) {
