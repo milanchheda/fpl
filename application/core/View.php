@@ -228,7 +228,9 @@ class View
         if($playersArray->dreamteam_count > 5)
             $dreamteamClass = "class='green'";
 
-        return '<div class="col-md-4 col-sm-6 '. $playersArray->teamName .' allFlipCards">
+        $positionName = strtolower($playersArray->position);
+
+        return '<div class="col-md-4 col-sm-6 '. $playersArray->teamName .' allFlipCards ' . $positionName . '">
              <div class="card-container manual-flip">
                 <div class="card">
                     <div class="front">
@@ -384,5 +386,161 @@ class View
         $query = $database->prepare($sql);
         $query->execute();
         return $query->fetchAll();
+    }
+
+    public function generateTeamCard($team) {
+        $redCardClass = '';
+        if($team->red_cards > 1)
+            $redCardClass = "red";
+
+        $yellowCardClass = '';
+        if($team->yellow_cards > 25)
+            $yellowCardClass = "red";
+
+        $assistsClass = '';
+        if($team->assists > 20)
+            $assistsClass="green";
+
+        $goalsScoredClass = '';
+        if($team->goals_scored > 30)
+            $goalsScoredClass="green";
+
+        $database = DatabaseFactory::getFactory()->getConnection();
+        $sql = "SELECT name from teams where short_name = '".$team->short_name."'";
+        $query = $database->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return '<div class="col-md-4 col-sm-6 '. $team->short_name .' allFlipCards">
+             <div class="card-container manual-flip">
+                <div class="card">
+                    <div class="front">
+                        <div class="cover">
+                            <h3 class="name">' . $result[0]->name . '</h3>
+                        </div>
+                        <div class="content">
+                            <div class="main">
+                                <div class="stats-container">
+                                    <div class="stats">
+                                        <h4>' . $team->total_points . '</h4>
+                                        <p>
+                                            Total Points
+                                        </p>
+                                    </div>
+                                    <div class="stats ' . $goalsScoredClass . '">
+                                        <h4>' . $team->goals_scored . '</h4>
+                                        <p>
+                                            Goals Scored
+                                        </p>
+                                    </div>
+                                    <div class="stats ' . $assistsClass . '">
+                                        <h4>' . $team->assists . '</h4>
+                                        <p>
+                                            Assists
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . number_format($team->minutes) . '</h4>
+                                        <p>
+                                            Minutes
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $team->clean_sheets . '</h4>
+                                        <p>
+                                            Clean Sheets
+                                        </p>
+                                    </div>
+                                    <div class="stats ' . $yellowCardClass . '">
+                                        <h4>' . $team->yellow_cards . '</h4>
+                                        <p>
+                                            Yellow Cards
+                                        </p>
+                                    </div>
+                                    <div class="stats ' . $redCardClass . '">
+                                        <h4>' . $team->red_cards . '</h4>
+                                        <p>
+                                            Red Cards
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $team->fouls . '</h4>
+                                        <p>
+                                            Fouls
+                                        </p>
+                                    </div>
+                                    <div class="stats">
+                                        <h4>' . $team->offside . '</h4>
+                                        <p>
+                                            Offside
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <div class="club ' . $team->short_name . '"></div>
+                                <button class="btn btn-simple" onclick="rotateCard(this)">
+                                    <i class="fa fa-mail-forward"></i> View details
+                                </button>
+                            </div>
+                        </div>
+                    </div> <!-- end front panel -->
+                    <div class="back">
+                        <div class="player-details">
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Big Chances Created</label>
+                                <span>' . $team->big_chances_created . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Big Chances Missed</label>
+                                <span>' . $team->big_chances_missed . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Yellow Cards</label>
+                                <span>' . $team->yellow_cards . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Red Cards</label>
+                                <span>' . $team->red_cards . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Total Fouls</label>
+                                <span>' . $team->fouls . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>No. of times offside</label>
+                                <span>' . $team->offside . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Penalties Missed</label>
+                                <span>' . $team->penalties_missed . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Key Passes</label>
+                                <span>' . $team->key_passes . '</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-futbol-o" aria-hidden="true"></i>
+                                <label>Targets Missed</label>
+                                <span>' . $team->target_missed . '</span>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+                                <i class="fa fa-reply"></i> Back
+                            </button>
+                        </div>
+                    </div> <!-- end back panel -->
+                </div> <!-- end card -->
+            </div> <!-- end card-container -->
+        </div> <!-- end col sm 3 -->';
     }
 }

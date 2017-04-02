@@ -39,6 +39,8 @@
     <!-- End Facebook Pixel Code -->
 </head>
 <body>
+    <!-- Return to Top -->
+    <a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
     <div class="se-pre-con"></div>
     <!-- wrapper, to center website -->
     <div class="wrapper">
@@ -55,6 +57,9 @@
                     </li>
                     <li <?php if (View::checkForActiveController($filename, "players")) { echo ' class="active" '; } ?> >
                         <a href="<?php echo Config::get('URL'); ?>players/index">Players</a>
+                    </li>
+                    <li <?php if (View::checkForActiveController($filename, "teams")) { echo ' class="active" '; } ?> >
+                        <a href="<?php echo Config::get('URL'); ?>teams/index">Teams</a>
                     </li>
                 </ul>
             </div>
