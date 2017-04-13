@@ -47,7 +47,9 @@
 
         <!-- logo -->
         <div class="logo"></div>
-
+        <?php
+        if($filename != 'cactus/index' && $filename != 'cactus/upload') {
+        ?>
         <div class="container">
             <div class="row">
                 <!-- navigation -->
@@ -64,3 +66,6 @@
                 </ul>
             </div>
         </div>
+        <?php
+        }
+        ?>

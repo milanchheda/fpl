@@ -12,6 +12,9 @@
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/nprogress.js"></script>
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/bootstrap-typeahead.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/html2canvas.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/fileSaver.js"></script>
+    <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/jquery.lbslider.js"></script>
     <script type="text/javascript" src="<?php echo Config::get('URL'); ?>js/players.js"></script>
     <?php
     if (View::checkForActiveController($filename, "players")) {
