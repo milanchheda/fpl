@@ -119,17 +119,22 @@
 	                       <div class="col-xs-12 col-md-12 someContainer">';
         $count = 0;
         foreach ($payersArray as $key => $value) {
+            $dataPoints = [];
+            foreach($value['amount'] as $k => $v) {
+                $dataPoints[] = array("y" => $v, "label" => $k);
+            }
+            $chartValues = json_encode($dataPoints, JSON_NUMERIC_CHECK);
             $betOn = '';
             if(isset($value['bet_on']))
                 $betOn = implode_with_key($value['bet_on'],'-', ' ');
 
             $json = json_encode($value['amount']);
-            $name = str_replace('_', ' ', $key);
+            $name = $fullName = str_replace('_', ' ', $key);
             $name .= " <br />(Rs." . number_format($value['amount'][count($value['amount'])], 2) . ")";
             if($count % 4 == 0)
                 $chartHtml .= '<div class="col-sm-12">';
 
-            $chartHtml .= "<div class='col-md-3 col-sm-2 blockContainer'>
+            $chartHtml .= "<div class='col-md-3 col-sm-2 blockContainer' data-name='".$fullName."' data-json='".$chartValues."'>
                             <div class='panel panel-default chart-container'>
                                 <div class='panel-heading ".$betOn." losers'>" . ucwords($name) . "</div>
                             </div>
@@ -158,13 +163,29 @@
     }
 ?>
 <?php
-    echo '<div class="slider"><ul class="iplMatches">' . $teamsHTML . '</ul></div><a href="#" class="slider-arrow sa-left">&lt;</a>
-<a href="#" class="slider-arrow sa-right">&gt;</a>';
+    echo '<div class="slider"><ul class="iplMatches">' . $teamsHTML . '</ul></div><a href="#" class="slider-arrow sa-left">&lt;</a><a href="#" class="slider-arrow sa-right">&gt;</a>';
 ?>
 <div class="container">
     <div class="row">
         <?php
             echo $chartHtml;
         ?>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

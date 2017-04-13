@@ -1622,6 +1622,7 @@ ul.actualMatches li {
     /*margin: 35px 0px;*/
     padding: 0 !important;
     text-align: center;
+    cursor: pointer;
 }
 .someContainer .blockContainer .panel-heading {
     padding: 10px 5px;

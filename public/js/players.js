@@ -18,7 +18,33 @@ $('#return-to-top').click(function() {      // When arrow is clicked
 });
 
 $(document).ready(function(){
-
+    $(".blockContainer").click(function(){
+        $(".modal-title").html($(this).attr('data-name'));
+        var chartValues = $(this).attr('data-json');
+        console.log(chartValues);
+        $('#myModal').modal('show');
+        $(function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "theme2",
+                animationEnabled: true,
+                title: {
+                    text: ""
+                },
+                axisY: {
+                    interval:20,
+                    includeZero: false
+                 },
+                data: [
+                {
+                    type: "line",
+                    thickness: 3,
+                    dataPoints: $.parseJSON(chartValues)
+                }
+                ]
+            });
+            chart.render();
+        });
+    });
     jQuery('.slider').lbSlider({
         leftBtn: '.sa-left', // left button selector
         rightBtn: '.sa-right', // right button selector
