@@ -77,7 +77,7 @@ if it's not present, don't show loader */
     color: #fff;
 }
 .container button {
-    background-color: #ccc;
+    /*background-color: #ccc;*/
     border: 0;
     padding: 5px 10px;
     cursor: pointer;
@@ -1507,4 +1507,144 @@ ul.clubList {
 }
 #playerComparison table {
     width: 100%;
+}
+#playerComparison table tr th {
+    margin: 0 4px;
+}
+
+
+
+
+
+
+
+
+
+
+.slider {
+    position: relative;
+    /*width: 450px;*/
+    margin: auto;
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    list-style: none;
+    text-align: center;
+}
+ul li span {
+    display: inline-block;
+    vertical-align: middle;
+    /*width: 100px;*/
+    /*height: 100px;*/
+    /*background: black;*/
+}
+ul li .date-card {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #ddd;
+    padding: 20px 10px 0 10px;
+    float: left;
+}
+ul li .date-match {
+    margin-top: 5px;
+}
+.date-card ul li label {
+    font-size: 14px;
+    display: block;
+    text-align: center;
+    font-weight: bold;
+}
+ul.iplMatches li {
+    background: #FFF;
+    height: 100px;
+}
+ul.iplMatches li:hover, ul.iplMatches li:hover ul.actualMatches li  {
+    background: #EFEFEF;
+    cursor: pointer;
+}
+ul.iplMatches li > label {
+    margin: 0;
+}
+ul.iplMatches li.active, ul.iplMatches li.active ul.actualMatches li {
+    background: #1B95E0;
+    color: #FFF;
+}
+ul.iplMatches li.active > .date-card ul li label {
+    color: #000;
+}
+ul.iplMatches li span.vs {
+    font-size: 11px;
+    font-weight: bold;
+}
+ul.iplMatches li .timeMatch {
+    /*clear: both;*/
+    float: left;
+    width: 60%;
+}
+ul.actualMatches {
+    float: left;
+    margin: 0 10%;
+}
+ul.actualMatches li {
+    float: left;
+    height: 30px;
+}
+.date-card ul li {
+    background: #DDD;
+}
+.slider-arrow {
+    position: absolute;
+    top: 40px;
+    width: 20px;
+    height: 20px;
+    background: black;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+}
+.sa-left {
+    left: 10px;
+}
+.sa-right {
+    right: 10px;
+}
+.someContainer {
+    margin: 10px;
+}
+.someContainer {
+    margin-top:40px;
+}
+.someContainer .blockContainer {
+    /*margin: 35px 0px;*/
+    padding: 0 !important;
+    text-align: center;
+}
+.someContainer .blockContainer .panel-heading {
+    padding: 10px 5px;
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    /*font-weight: bold;*/
+    font-size: 1.2em;
+    font-variant: small-caps;
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-bottom: 10px;
+}
+.panel .losers {
+    background: #DE5244 !important;
+    color: #FFF !important;
+    border: 1px solid #d00;
+}
+.panel .winners {
+    background: #2DA761 !important;
+    color: #FFF !important;
+    font-weight: bold;
+    border: 1px solid #35AA3F;
 }
