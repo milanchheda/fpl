@@ -8,8 +8,9 @@
     <meta name="description" content="FPL Analysis for Fantasy Premier League Managers">
     <meta name="keywords" content="English Premier League, Fantasy Premier League, EPL, BPL, Barclays Premier League, Premier League">
 
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/bootstrap.min.css" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/nprogress.css" />
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
     <script>
