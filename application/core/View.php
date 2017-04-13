@@ -394,11 +394,11 @@ class View
             $redCardClass = "red";
 
         $yellowCardClass = '';
-        if($team->yellow_cards > 25)
+        if($team->yellow_cards > 50)
             $yellowCardClass = "red";
 
         $assistsClass = '';
-        if($team->assists > 20)
+        if($team->assists > 25)
             $assistsClass="green";
 
         $goalsScoredClass = '';
