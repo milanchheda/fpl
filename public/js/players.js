@@ -103,43 +103,47 @@ $(document).ready(function(){
     });
 
     $("#compareGraph").click(function(){
-        var selectedNames = '';
-        var selectedJSON = selectedData = '';
-        var i = 0;
-        var obj = [];
-        $(".compareThis").each(function(){
-            selectedNames += $(this).parents(".blockContainer").attr('data-name') + ', ';
-            selectedJSON = $.parseJSON($(this).parents(".blockContainer").attr('data-json'));
-            obj[i] = {
-                type: "line",
-                thickness: 3,
-                showInLegend: true,
-                name: $(this).parents(".blockContainer").attr('data-name'),
-                dataPoints: selectedJSON
-            };
-            i++;
-        });
-
-        selectedNames = selectedNames.substring(0,(selectedNames.length-2));
-        var myJsonString = JSON.stringify(obj);
-        $(".modal-title").html(selectedNames);
-        $('#myModal').modal('show');
-        $(function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
-                theme: "theme2",
-                animationEnabled: true,
-                title: {
-                    text: ""
-                },
-                axisY: {
-                    interval:20,
-                    includeZero: false
-                 },
-                data: $.parseJSON(myJsonString)
-
+        if(parseInt($(".compareCount").text()) > 1) {
+            var selectedNames = '';
+            var selectedJSON = selectedData = '';
+            var i = 0;
+            var obj = [];
+            $(".compareThis").each(function(){
+                selectedNames += $(this).parents(".blockContainer").attr('data-name') + ', ';
+                selectedJSON = $.parseJSON($(this).parents(".blockContainer").attr('data-json'));
+                obj[i] = {
+                    type: "line",
+                    thickness: 3,
+                    showInLegend: true,
+                    name: $(this).parents(".blockContainer").attr('data-name'),
+                    dataPoints: selectedJSON
+                };
+                i++;
             });
-            chart.render();
-        });
+
+            selectedNames = selectedNames.substring(0,(selectedNames.length-2));
+            var myJsonString = JSON.stringify(obj);
+            $(".modal-title").html(selectedNames);
+            $('#myModal').modal('show');
+            $(function () {
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    theme: "theme2",
+                    animationEnabled: true,
+                    title: {
+                        text: ""
+                    },
+                    axisY: {
+                        interval:20,
+                        includeZero: false
+                     },
+                    data: $.parseJSON(myJsonString)
+
+                });
+                chart.render();
+            });
+        } else {
+            alert("Select atleast 2 participants to check the comparison.");
+        }
     });
 
     // We bind a new event to our link
