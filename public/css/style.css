@@ -41,7 +41,7 @@ if it's not present, don't show loader */
 .container {
     max-width: 960px;
     /*border: 1px solid #ccc;*/
-    padding: 20px;
+    padding: 10px;
     /*margin: 30px 0 30px 0;*/
 }
 .container a {
@@ -1612,16 +1612,13 @@ ul.actualMatches li {
 .sa-right {
     right: 10px;
 }
-.someContainer {
-    margin: 10px;
-}
-.someContainer {
-    margin-top:40px;
-}
 .someContainer .blockContainer {
     /*margin: 35px 0px;*/
     padding: 0 !important;
     text-align: center;
+    /*cursor: pointer;*/
+}
+.participantGraph {
     cursor: pointer;
 }
 .someContainer .blockContainer .panel-heading {
@@ -1636,7 +1633,7 @@ ul.actualMatches li {
     border-bottom: 1px solid transparent;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
 }
 .panel .losers {
     background: #DE5244 !important;
@@ -1648,4 +1645,30 @@ ul.actualMatches li {
     color: #FFF !important;
     font-weight: bold;
     border: 1px solid #35AA3F;
+}
+#summaryContainer {
+    background-color: #FFF8DC;
+    border: 1px solid #E0DCBF;
+
+    padding: 7px 10px 3px 10px;
+    /*background: #c1ecce;
+    border: 1px solid #5fba7d;*/
+}
+.link {
+    cursor: pointer;
+    text-decoration: none;
+}
+.sortText, .compareText, #winningTeamName, #ratio {
+    margin-left: 2px;
+}
+.compareParticipants {
+    font-size: 2em;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #FFF;
+    cursor: pointer;
+}
+.compareParticipants:hover {
+    color: #DDD;
 }

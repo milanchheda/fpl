@@ -18,9 +18,22 @@ $('#return-to-top').click(function() {      // When arrow is clicked
 });
 
 $(document).ready(function(){
-    $(".blockContainer").click(function(){
+    sortParticipants('desc');
+
+    $(".sort-order").click(function(){
+        sortParticipants($(this).attr('sort-order'));
+        if($(this).attr('sort-order') == 'asc'){
+            $(".sortText").text("Score Ascending");
+            $(this).attr('sort-order', 'desc');
+        } else {
+            $(".sortText").text("Score Descending");
+            $(this).attr('sort-order', 'asc');
+        }
+    });
+
+    $(".participantGraph").click(function(){
         $(".modal-title").html($(this).attr('data-name'));
-        var chartValues = $(this).attr('data-json');
+        var chartValues = $(this).parents(".blockContainer").attr('data-json');
         console.log(chartValues);
         $('#myModal').modal('show');
         $(function () {
@@ -45,6 +58,7 @@ $(document).ready(function(){
             chart.render();
         });
     });
+
     jQuery('.slider').lbSlider({
         leftBtn: '.sa-left', // left button selector
         rightBtn: '.sa-right', // right button selector
@@ -54,12 +68,83 @@ $(document).ready(function(){
     });
 
     $(".matches").on('click', function(){
+        var getId = $(this).attr('id');
+        getId = getId.split('-');
+        $("#winningTeamName").text(getId[1]);
         $(".matches").removeClass('active');
         $(this).addClass('active');
         $(".someContainer .panel-heading").removeClass('winners').addClass('losers');
         $(".someContainer " + "." + $(this).attr('id')).addClass("winners").removeClass('losers');
+        var winnersCount = $(".someContainer .winners").length;
+        var losersCount = $(".someContainer .losers").length;
+        $("#ratio").html('Winners: <b>' + winnersCount + ' / </b>Losers: <b>' + losersCount + '</b>');
         // alert($(this).attr('id'));
-    })
+    });
+
+    $(".compareParticipants").click(function(){
+        if($(this).hasClass('fa-plus-square')) {
+            $(this).removeClass('fa-plus-square').addClass('fa-minus-square').addClass('compareThis');
+            var getCompareCount = $(".compareCount").text();
+            if(getCompareCount == '')
+                getCompareCount = 0;
+            $(".compareCount").text(parseInt(getCompareCount)+1);
+        } else {
+            $(this).addClass('fa-plus-square').removeClass('fa-minus-square').removeClass('compareThis');
+            var getCompareCount = $(".compareCount").text();
+            if(getCompareCount == '')
+                getCompareCount = 0;
+            $(".compareCount").text(parseInt(getCompareCount)-1);
+        }
+        if(parseInt($(".compareCount").text()) > 1) {
+            $("#compareGraph").addClass('makeItRed');
+        } else {
+            $("#compareGraph").removeClass('makeItRed');
+        }
+    });
+
+    $("#compareGraph").click(function(){
+        if(parseInt($(".compareCount").text()) > 1) {
+            var selectedNames = '';
+            var selectedJSON = selectedData = '';
+            var i = 0;
+            var obj = [];
+            $(".compareThis").each(function(){
+                selectedNames += $(this).parents(".blockContainer").attr('data-name') + ', ';
+                selectedJSON = $.parseJSON($(this).parents(".blockContainer").attr('data-json'));
+                obj[i] = {
+                    type: "line",
+                    thickness: 3,
+                    showInLegend: true,
+                    name: $(this).parents(".blockContainer").attr('data-name'),
+                    dataPoints: selectedJSON
+                };
+                i++;
+            });
+
+            selectedNames = selectedNames.substring(0,(selectedNames.length-2));
+            var myJsonString = JSON.stringify(obj);
+            $(".modal-title").html(selectedNames);
+            $('#myModal').modal('show');
+            $(function () {
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    theme: "theme2",
+                    animationEnabled: true,
+                    title: {
+                        text: ""
+                    },
+                    axisY: {
+                        interval:20,
+                        includeZero: false
+                     },
+                    data: $.parseJSON(myJsonString)
+
+                });
+                chart.render();
+            });
+        } else {
+            alert("Select atleast 2 participants to check the comparison.");
+        }
+    });
 
     // We bind a new event to our link
     // $('a.tweet').click(function(e){
@@ -172,6 +257,17 @@ function fetchPlayers(totalShown) {
             }
 		}
 	});
+}
+
+function sortParticipants(sortOrder) {
+    $("div.blockContainer").sort(function(a, b) {
+        var contentA = parseInt($(a).attr('data-score'));
+        var contentB = parseInt($(b).attr('data-score'));
+        if(sortOrder == 'asc')
+            return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
+        else
+            return (contentA > contentB) ? -1 : (contentA < contentB) ? 1 : 0;
+    }).appendTo($(".someContainer"));
 }
 
 function fetchComparisonData(player_1, player_2) {

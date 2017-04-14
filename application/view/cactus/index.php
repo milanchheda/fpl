@@ -118,10 +118,20 @@
                         <div class="row">
 	                       <div class="col-xs-12 col-md-12 someContainer">';
         $count = 0;
+
         foreach ($payersArray as $key => $value) {
             $dataPoints = [];
+            $min = min($value['amount']);
+            $max = max($value['amount']);
             foreach($value['amount'] as $k => $v) {
-                $dataPoints[] = array("y" => $v, "label" => $k);
+                if($v == $min) {
+                   $dataPoints[] = array("y" => $v, "label" => $k, 'markerColor'=> "tomato", 'markerType'=> "cross");
+               } elseif($v == $max) {
+                  $dataPoints[] = array("y" => $v, "label" => $k, 'markerColor'=> "#6B8E23", 'markerType'=> "triangle", 'markerSize' => 14);
+              } else {
+                    $dataPoints[] = array("y" => $v, "label" => $k);
+               }
+
             }
             $chartValues = json_encode($dataPoints, JSON_NUMERIC_CHECK);
             $betOn = '';
@@ -131,18 +141,19 @@
             $json = json_encode($value['amount']);
             $name = $fullName = str_replace('_', ' ', $key);
             $name .= " <br />(Rs." . number_format($value['amount'][count($value['amount'])], 2) . ")";
-            if($count % 4 == 0)
-                $chartHtml .= '<div class="col-sm-12">';
+            // if($count % 4 == 0)
+                // $chartHtml .= '<div class="col-sm-12">';
 
-            $chartHtml .= "<div class='col-md-3 col-sm-2 blockContainer' data-name='".$fullName."' data-json='".$chartValues."'>
+            $chartHtml .= "<div class='col-md-3 col-sm-2 blockContainer' data-name='".$fullName."' data-json='".$chartValues."' data-score='" . $value['amount'][count($value['amount'])] . "'>
                             <div class='panel panel-default chart-container'>
-                                <div class='panel-heading ".$betOn." losers'>" . ucwords($name) . "</div>
+                            <i class='fa fa-plus-square compareParticipants' aria-hidden='true'></i>
+                                <div class='panel-heading ".$betOn." losers participantGraph'>" . ucwords($name) . "</div>
                             </div>
                         </div>";
 
             $count++;
-            if($count % 4 == 0)
-                $chartHtml .= '</div>';
+            // if($count % 4 == 0)
+                // $chartHtml .= '</div>';
         }
         $chartHtml .= '</div></div></div>';
 	}
@@ -161,10 +172,50 @@
 
         return substr($return, strlen($outglue));
     }
+
+    function adjustBrightness($hex, $steps) {
+        // Steps should be between -255 and 255. Negative = darker, positive = lighter
+        $steps = max(-255, min(255, $steps));
+
+        // Normalize into a six character long hex string
+        $hex = str_replace('#', '', $hex);
+        if (strlen($hex) == 3) {
+            $hex = str_repeat(substr($hex,0,1), 2).str_repeat(substr($hex,1,1), 2).str_repeat(substr($hex,2,1), 2);
+        }
+
+        // Split into three parts: R, G and B
+        $color_parts = str_split($hex, 2);
+        $return = '#';
+
+        foreach ($color_parts as $color) {
+            $color   = hexdec($color); // Convert to decimal
+            $color   = max(0,min(255,$color + $steps)); // Adjust color
+            $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
+        }
+
+        return $return;
+    }
+
+    // echo adjustBrightness('#d00', 240);
+
 ?>
 <?php
     echo '<div class="slider"><ul class="iplMatches">' . $teamsHTML . '</ul></div><a href="#" class="slider-arrow sa-left">&lt;</a><a href="#" class="slider-arrow sa-right">&gt;</a>';
 ?>
+<div class="container">
+    <div class="row" id="summaryContainer">
+        <a class="pull-left link"><i class="fa fa-exchange" aria-hidden="true"></i><span class="compareText" id="compareGraph">Compare (<span class="compareCount"></span>)</span></a>
+
+        <span class="col-xs-12 col-sm-4 text-center footer-name" id="winningTeamContainer">
+            <label>Winning team: </label><span id="winningTeamName"></span>
+        </span>
+        <span class="col-xs-12 col-sm-4 text-center footer-name" id="winningTeamContainer">
+            <label>Ratio: </label><span id="ratio"></span>
+        </span>
+
+        <a class="pull-right link sort-order" sort-order='asc'><i class="fa fa-sort" aria-hidden="true"></i><span class="sortText"> Score Descending</span></a>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <?php
