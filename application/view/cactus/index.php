@@ -216,7 +216,7 @@
         <a class="pull-right link sort-order" sort-order='asc'><i class="fa fa-sort" aria-hidden="true"></i><span class="sortText"> Score Descending</span></a>
     </div>
 </div>
-<img src='tmp/ipl-ranking.png' style="max-width:960px; height: 270px;"/>
+<img src='http://www.fplanalysis.com/tmp/ipl-ranking.png' alt="IPL Ranking" style="max-width:960px; height: 270px;"/>
 <div class="container">
     <div class="row">
         <?php
