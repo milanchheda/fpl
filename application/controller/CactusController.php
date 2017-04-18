@@ -33,5 +33,20 @@ class CactusController extends Controller
         move_uploaded_file($_FILES["ufile"]["tmp_name"], Config::get('PATH_LIBRARIES') . "uploads/" . $newfilename);
         header('Location: ' . Config::get('URL') . 'cactus');
     }
+
+    public function download()
+    {
+        $filename = Config::get('PATH_LIBRARIES') . 'uploads/IPL.xlsx';
+        header("Pragma: public"); // required
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: private",false); // required for certain browsers
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=\"".basename($filename)."\";" );
+        header("Content-Transfer-Encoding: binary");
+        header("Content-Length: ".filesize($filename));
+        readfile("$filename");
+        exit();
+    }
 }
 ?>
