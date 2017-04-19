@@ -268,6 +268,44 @@ function sortParticipants(sortOrder) {
         else
             return (contentA > contentB) ? -1 : (contentA < contentB) ? 1 : 0;
     }).appendTo($(".someContainer"));
+
+    addFadeColors();
+}
+
+function shadeBlend(p,c0,c1) {
+    var n=p<0?p*-1:p,u=Math.round,w=parseInt;
+    if(c0.length>7){
+        var f=c0.split(","),t=(c1?c1:p<0?"rgb(0,0,0)":"rgb(255,255,255)").split(","),R=w(f[0].slice(4)),G=w(f[1]),B=w(f[2]);
+        return "rgb("+(u((w(t[0].slice(4))-R)*n)+R)+","+(u((w(t[1])-G)*n)+G)+","+(u((w(t[2])-B)*n)+B)+")"
+    }else{
+        var f=w(c0.slice(1),16),t=w((c1?c1:p<0?"#000000":"#FFFFFF").slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF;
+        return "#"+(0x1000000+(u(((t>>16)-R1)*n)+R1)*0x10000+(u(((t>>8&0x00FF)-G1)*n)+G1)*0x100+(u(((t&0x0000FF)-B1)*n)+B1)).toString(16).slice(1)
+    }
+}
+
+function addFadeColors() {
+    var score = shadedColor = textColor = '';
+    var redColor = '#DE5244';
+    var greenColor = '#2DA761';
+    $("div.blockContainer").each(function() {
+        var getScoreDiff = ''
+        score = $(this).data('score');
+        if(parseInt(score) > 1000) {
+            getScoreDiff = score - 1000;
+            getScoreDiff = getScoreDiff/100;
+            shadedColor = shadeBlend(1-getScoreDiff,greenColor);
+            $(this).find(".panel-heading").css({'background-color': shadedColor});
+        } else {
+            getScoreDiff = 1000 - score;
+            getScoreDiff = getScoreDiff/100;
+            shadedColor = shadeBlend(1-getScoreDiff,redColor);
+            if(1-getScoreDiff > 0.80) {
+                shadedColor = 0.80;
+            }
+            $(this).find(".panel-heading").css({'background-color': shadedColor});
+
+        }
+    });
 }
 
 function fetchComparisonData(player_1, player_2) {
