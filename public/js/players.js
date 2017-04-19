@@ -293,18 +293,18 @@ function addFadeColors() {
         if(parseInt(score) > 1000) {
             getScoreDiff = score - 1000;
             getScoreDiff = getScoreDiff/100;
-            textColor = '#333';
-            if(getScoreDiff > 1)
-                textColor = '#FFF';
+            textColor = '#FFF';
+            if(getScoreDiff < 0.7)
+                textColor = '#333';
             shadedColor = shadeBlend(1-getScoreDiff,greenColor);
             $(this).find(".panel-heading").css({'background-color': shadedColor, 'color': textColor});
         } else {
             getScoreDiff = 1000 - score;
             getScoreDiff = getScoreDiff/100;
             shadedColor = shadeBlend(1-getScoreDiff,redColor);
-            textColor = '#333';
+            textColor = '#FFF';
             if(1-getScoreDiff > 0.80) {
-                textColor = '#FFF';
+                textColor = '#333';
             }
             $(this).find(".panel-heading").css({'background-color': shadedColor, 'color': textColor});
 
