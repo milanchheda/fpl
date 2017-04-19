@@ -1,14 +1,21 @@
 <?php
+
 	require Config::get('PATH_LIBRARIES') . 'php-excel-reader/excel_reader2.php';
 	require Config::get('PATH_LIBRARIES') . 'SpreadsheetReader.php';
-	date_default_timezone_set('UTC');
+	// date_default_timezone_set('UTC');
+    date_default_timezone_set('Asia/Kolkata');
 
 	try
 	{
-		$Spreadsheet = new SpreadsheetReader(Config::get('PATH_LIBRARIES') . 'uploads/IPL.xlsx');
+        $filename = Config::get('PATH_LIBRARIES') . 'uploads/IPL.xlsx';
+		$Spreadsheet = new SpreadsheetReader($filename);
 		$BaseMem = memory_get_usage();
         $payersArray = $matchesArray = [];
 		$Sheets = $Spreadsheet -> Sheets();
+
+        if (file_exists($filename)) {
+            $fileUpdatedTime = date ("F d Y H:i:s.", filemtime($filename));
+        }
 
 		foreach ($Sheets as $Index => $Name)
 		{
@@ -216,7 +223,15 @@
         <a class="pull-right link sort-order" sort-order='asc'><i class="fa fa-sort" aria-hidden="true"></i><span class="sortText"> Score Descending</span></a>
     </div>
 </div>
-<img src='http://www.fplanalysis.com/tmp/ipl-ranking.png' alt="IPL Ranking" style="max-width:960px; height: 270px;"/>
+
+<div class="container">
+    <div class="row">
+        <img src='http://www.fplanalysis.com/tmp/ipl-ranking.png' alt="IPL Ranking" style="max-width:960px; height: 270px;"/>
+        <?php
+            echo "<span class='pull-right'><b>Last updated: </b>" . $fileUpdatedTime . "</span>";
+        ?>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <?php
