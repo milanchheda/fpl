@@ -48,5 +48,37 @@ class CactusController extends Controller
         readfile("$filename");
         exit();
     }
+
+    public function vote()
+    {
+        $name = Request::post('name');
+        $type = Request::post('type');
+
+        if($name != '' && $type != '') {
+            $client = new Predis\Client();
+            if($client->exists($name)) {
+                $lastAccessTime = $client->object("idletime", $name);
+                if($lastAccessTime > 900) {
+                    $client->hincrby($name, $type, 1);
+                    $value = $client->hgetall($name);
+                    $output = array('message' => 'Vote registered successfully.', 'values' => $value);
+                } else {
+                    // don't do anything.
+                    $minute = ceil($lastAccessTime/30);
+                    $output = array('message' => 'Wait for ' . (15-$minute) . ' minute(s), as somebody has already voted for ' . str_replace('_', ' ', $name));
+                }
+            } else {
+                $up_vote = ($type == 'up_vote') ? 1 : 0;
+                $down_vote = ($type == 'down_vote') ? 1 : 0;
+                $client->hmset($name, [
+                    'up_vote' => $up_vote,
+                    'down_vote' => $down_vote,
+                ]);
+                $value = $client->hgetall($name);
+                $output = array('message' => 'Vote registered successfully.', 'values' => $value);
+            }
+        }
+        echo json_encode($output);
+    }
 }
 ?>
