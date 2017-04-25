@@ -4,6 +4,7 @@
 	require Config::get('PATH_LIBRARIES') . 'SpreadsheetReader.php';
 	// date_default_timezone_set('UTC');
     date_default_timezone_set('Asia/Kolkata');
+    $client = new Predis\Client();
 
 	try
 	{
@@ -150,11 +151,22 @@
             $name .= " <br />(Rs." . number_format($value['amount'][count($value['amount'])], 2) . ")";
             // if($count % 4 == 0)
                 // $chartHtml .= '<div class="col-sm-12">';
+            $votes = $client->hgetall($key);
+            $upVotes = isset($votes['up_vote'])?$votes['up_vote']:0;
+            $downVotes = isset($votes['down_vote'])?$votes['down_vote']:0;
 
-            $chartHtml .= "<div class='col-md-3 col-sm-2 blockContainer' data-name='".$fullName."' data-json='".$chartValues."' data-score='" . $value['amount'][count($value['amount'])] . "'>
+            $chartHtml .= "<div class='col-md-3 col-sm-2 blockContainer' data-orig-nanme='".$key."' data-name='".$fullName."' data-json='".$chartValues."' data-score='" . $value['amount'][count($value['amount'])] . "'>
                             <div class='panel panel-default chart-container'>
                             <i class='fa fa-plus-square compareParticipants' aria-hidden='true'></i>
                                 <div class='panel-heading ".$betOn." losers participantGraph'>" . ucwords($name) . "</div>
+                                <div class='voting_wrapper'>
+                                    <div class='voting_btn'>
+                                        <div class='up_vote'>&nbsp;</div><span class='up_votes'>".$upVotes."</span>
+                                    </div>
+                                    <div class='voting_btn'>
+                                        <div class='down_vote'>&nbsp;</div><span class='down_votes'>".$downVotes."</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>";
 

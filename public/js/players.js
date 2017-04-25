@@ -17,6 +17,25 @@ $('#return-to-top').click(function() {      // When arrow is clicked
     }, 2300);
 });
 
+$(".down_vote, .up_vote").click(function() {
+    var current = $(this);
+    $.ajax({
+		async: true,
+		url: 'cactus/vote',
+		data:{ name: $(this).parents(".blockContainer:first").attr('data-orig-nanme'), type: $(this).attr('class') },
+		type: "POST",
+		dataType: "json",
+		success: function(json) {
+            if(json.values) {
+                current.parents(".voting_wrapper:first").find(".up_votes").text(json.values.up_vote);
+                current.parents(".voting_wrapper:first").find(".down_votes").text(json.values.down_vote);
+            } else {
+                alert(json.message);
+            }
+		}
+	});
+});
+
 $(document).ready(function(){
     sortParticipants('desc');
 
