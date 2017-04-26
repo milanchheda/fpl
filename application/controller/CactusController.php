@@ -64,7 +64,7 @@ class CactusController extends Controller
                     $output = array('message' => 'Vote registered successfully.', 'values' => $value);
                 } else {
                     // don't do anything.
-                    $minute = ceil($lastAccessTime/30);
+                    $minute = ceil($lastAccessTime/60);
                     $output = array('message' => 'Wait for ' . (15-$minute) . ' minute(s), as somebody has already voted for ' . str_replace('_', ' ', $name));
                 }
             } else {
