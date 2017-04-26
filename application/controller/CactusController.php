@@ -57,15 +57,23 @@ class CactusController extends Controller
         if($name != '' && $type != '') {
             $client = new Predis\Client();
             if($client->exists($name)) {
-                $lastAccessTime = $client->object("idletime", $name);
-                if($lastAccessTime > 900) {
+                // $lastAccessTime = $client->object("idletime", $name);
+                $getValues = $client->hgetall($name);
+                $diffTime = time() - $getValues['time'];
+                if($diffTime > 600) {
                     $client->hincrby($name, $type, 1);
+                    $client->hset($name, 'time', time());
                     $value = $client->hgetall($name);
                     $output = array('message' => 'Vote registered successfully.', 'values' => $value);
                 } else {
                     // don't do anything.
-                    $minute = ceil($lastAccessTime/60);
-                    $output = array('message' => 'Wait for ' . (15-$minute) . ' minute(s), as somebody has already voted for ' . str_replace('_', ' ', $name));
+                    $minute = ceil($diffTime/60);
+
+                    $remainingTime = (10-$minute) . ' minute(s)';
+                    if((10-$minute) == 0) {
+                        $remainingTime = 600-$diffTime . ' seconds';
+                    }
+                    $output = array('message' => 'Wait for ' . $remainingTime . ', as somebody has already voted for ' . str_replace('_', ' ', $name));
                 }
             } else {
                 $up_vote = ($type == 'up_vote') ? 1 : 0;
@@ -73,6 +81,7 @@ class CactusController extends Controller
                 $client->hmset($name, [
                     'up_vote' => $up_vote,
                     'down_vote' => $down_vote,
+                    'time' => time()
                 ]);
                 $value = $client->hgetall($name);
                 $output = array('message' => 'Vote registered successfully.', 'values' => $value);
