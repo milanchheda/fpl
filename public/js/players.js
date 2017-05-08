@@ -315,6 +315,8 @@ function addFadeColors() {
             textColor = '#FFF';
             if(getScoreDiff < 0.7)
                 textColor = '#333';
+            if(getScoreDiff > 2)
+                getScoreDiff = 1.6;
             shadedColor = shadeBlend(1-getScoreDiff,greenColor);
             $(this).find(".panel-heading").css({'background-color': shadedColor, 'color': textColor});
         } else {
